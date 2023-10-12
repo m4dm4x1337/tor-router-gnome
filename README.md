@@ -14,7 +14,7 @@ Download the Debian package and run this commands:
 sudo dpkg -i tor-router-gnome_1.0_all.deb || sudo apt-get -f install
 ```
 
-The `tor-router-gnome` package depends on the `tor-router` package which should be installed first.
+The `tor-router-gnome` package depends on the `tor-router` package which should be [installed first](https://github.com/m4dm4x1337/tor-router#installation).
 
 ## Usage
 
