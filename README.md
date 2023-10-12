@@ -51,7 +51,7 @@ This project is licensed under the GPLv3 License. See the COPYING file for detai
 
 ## Author
 
-The Tor-Router Debian package was created by m4dm4x1337.
+The Tor-Router Gnome Debian package was created by m4dm4x1337.
 
 ## Donations 🥺
 
