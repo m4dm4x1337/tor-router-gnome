@@ -1,0 +1,362 @@
+#!/usr/bin/python3
+
+# Tor-Router Gnome (GTK+ AppIndicator)
+# Copyright (C) 2023 m4dm4x1337
+#
+# This file is part of the tor-router-gnome debian package.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import os
+#import sys
+import subprocess
+import gi
+import gettext
+import threading
+import webbrowser
+gi.require_version("Gtk", "3.0")
+gi.require_version('AppIndicator3', '0.1')
+gi.require_version('Notify', '0.7')
+from gi.repository import GLib as glib, Gtk as gtk, Gdk as gdk
+from gi.repository import AppIndicator3 as appindicator
+from gi.repository import Notify, GdkPixbuf
+
+t = gettext.translation('tor-router-gnome', '/usr/share/locale', fallback=True)
+_ = t.gettext
+
+def main():
+  Notify.init("Tor-Router")
+  indicator = appindicator.Indicator.new("customtray", '', appindicator.IndicatorCategory.APPLICATION_STATUS)
+  indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+  indicator.set_menu(menu(indicator))
+  status_update(indicator)
+  glib.timeout_add(1000, status_update, indicator)
+  gtk.main()
+
+def status_update(indicator):
+
+  status = subprocess.check_output("sudo /usr/share/tor-router/sbin/tor-router-status", shell=True)
+
+  if status == b'offline':
+    indicator.set_icon(indicator.ICON_OFFLINE)
+    indicator.set_label(indicator.LABEL_OFFLINE, 'customtray')
+    indicator.menuitem_start.set_sensitive(False)
+    indicator.menuitem_stop.set_sensitive(False)
+    indicator.menuitem_reload.set_sensitive(False)
+  elif status == b'disabled':
+    indicator.set_icon(indicator.ICON_DISABLED)
+    indicator.set_label(indicator.LABEL_DISABLED, 'customtray')
+    indicator.menuitem_start.set_sensitive(True)
+    indicator.menuitem_stop.set_sensitive(False)
+    indicator.menuitem_reload.set_sensitive(False)
+  elif status == b'stopped':
+    indicator.set_icon(indicator.ICON_STOPPED)
+    indicator.set_label(indicator.LABEL_STOPPED, 'customtray')
+    indicator.menuitem_start.set_sensitive(False)
+    indicator.menuitem_stop.set_sensitive(True)
+    indicator.menuitem_reload.set_sensitive(True)
+  else:
+    indicator.set_icon(indicator.ICON_ENABLED)
+    indicator.set_label(indicator.LABEL_ENABLED, 'customtray')
+    indicator.menuitem_start.set_sensitive(False)
+    indicator.menuitem_stop.set_sensitive(True)
+    indicator.menuitem_reload.set_sensitive(True)
+
+  return True
+
+def menu(indicator):
+
+# indicator.APP_ICON       = os.environ['APP_ICON']       if 'APP_ICON'       in os.environ else '/usr/share/pixmaps/tor-router-gnome.xpm'
+  indicator.APP_ICON       = os.environ['APP_ICON']       if 'APP_ICON'       in os.environ else '/usr/share/icons/hicolor/scalable/apps/tor-router-gnome-enabled.svg'
+
+  indicator.ICON_OFFLINE   = os.environ['ICON_OFFLINE']   if 'ICON_OFFLINE'   in os.environ else '/usr/share/icons/hicolor/scalable/apps/tor-router-gnome-offline.svg'
+  indicator.ICON_DISABLED  = os.environ['ICON_DISABLED']  if 'ICON_DISABLED'  in os.environ else '/usr/share/icons/hicolor/scalable/apps/tor-router-gnome-disabled.svg'
+  indicator.ICON_STOPPED   = os.environ['ICON_STOPPED']   if 'ICON_STOPPED'   in os.environ else '/usr/share/icons/hicolor/scalable/apps/tor-router-gnome-stopped.svg'
+  indicator.ICON_ENABLED   = os.environ['ICON_ENABLED']   if 'ICON_ENABLED'   in os.environ else '/usr/share/icons/hicolor/scalable/apps/tor-router-gnome-enabled.svg'
+  indicator.ICON_DONATE    = os.environ['ICON_DONATE']    if 'ICON_DONATE'    in os.environ else '/usr/share/pixmaps/tor-router-gnome-donation.png'
+
+  indicator.LABEL_OFFLINE  = os.environ['LABEL_OFFLINE']  if 'LABEL_OFFLINE'  in os.environ else _('OFFLINE')
+  indicator.LABEL_DISABLED = os.environ['LABEL_DISABLED'] if 'LABEL_DISABLED' in os.environ else _('CLEARNET')
+  indicator.LABEL_STOPPED  = os.environ['LABEL_STOPPED']  if 'LABEL_STOPPED'  in os.environ else _('STOPPED')
+  indicator.LABEL_ENABLED  = os.environ['LABEL_ENABLED']  if 'LABEL_ENABLED'  in os.environ else _('DARKNET')
+
+  indicator.MENU_START     = os.environ['MENU_START']     if 'MENU_START'     in os.environ else _('Darknet')
+  indicator.MENU_STOP      = os.environ['MENU_STOP']      if 'MENU_STOP'      in os.environ else _('Clearnet')
+  indicator.MENU_TORCHK    = os.environ['MENU_TORCHK']    if 'MENU_TORCHK'    in os.environ else _('Show IP Address')
+  indicator.MENU_RELOAD    = os.environ['MENU_RELOAD']    if 'MENU_RELOAD'    in os.environ else _('Switch IP Address')
+  indicator.MENU_STATUS    = os.environ['MENU_STATUS']    if 'MENU_STATUS'    in os.environ else _('Status')
+  indicator.MENU_SETTINGS  = os.environ['MENU_SETTINGS']  if 'MENU_SETTINGS'  in os.environ else _('Settings')
+  indicator.MENU_DONATE    = os.environ['MENU_DONATE']    if 'MENU_DONATE'    in os.environ else _('Please Donate') + u' \U0001F97A'
+  indicator.MENU_ABOUT     = os.environ['MENU_ABOUT']     if 'MENU_ABOUT'     in os.environ else _('About')
+  indicator.MENU_EXIT      = os.environ['MENU_EXIT']      if 'MENU_EXIT'      in os.environ else _('Exit')
+
+  menu = gtk.Menu()
+
+  menuitem_start = gtk.MenuItem(indicator.MENU_START)
+  menuitem_start.connect('activate', tor_router_start)
+  menu.append(menuitem_start)
+
+  menuitem_stop = gtk.MenuItem(indicator.MENU_STOP)
+  menuitem_stop.connect('activate', tor_router_stop)
+  menu.append(menuitem_stop)
+
+  menuitem_separator1 = gtk.SeparatorMenuItem()
+  menu.append(menuitem_separator1)
+
+  menuitem_torchk = gtk.MenuItem(indicator.MENU_TORCHK)
+  menuitem_torchk.connect('activate', tor_router_torchk)
+  menu.append(menuitem_torchk)
+
+  menuitem_reload = gtk.MenuItem(indicator.MENU_RELOAD)
+  menuitem_reload.connect('activate', tor_router_reload)
+  menu.append(menuitem_reload)
+
+  menuitem_status = gtk.MenuItem(indicator.MENU_STATUS)
+  menuitem_status.connect('activate', tor_router_status)
+  menu.append(menuitem_status)
+
+  menuitem_settings = gtk.MenuItem(indicator.MENU_SETTINGS)
+  menuitem_settings.connect('activate', tor_router_settings)
+  menu.append(menuitem_settings)
+
+  menuitem_separator2 = gtk.SeparatorMenuItem()
+  menu.append(menuitem_separator2)
+
+  menuitem_donate = gtk.MenuItem(indicator.MENU_DONATE)
+  menuitem_donate.connect('activate', dialog_donate)
+  menu.append(menuitem_donate)
+
+  menuitem_separator3 = gtk.SeparatorMenuItem()
+  menu.append(menuitem_separator3)
+
+  menuitem_about = gtk.MenuItem(indicator.MENU_ABOUT)
+  menuitem_about.connect('activate', dialog_about)
+  menu.append(menuitem_about)
+
+  menuitem_exit = gtk.MenuItem(indicator.MENU_EXIT)
+  menuitem_exit.connect('activate', quit)
+  menu.append(menuitem_exit)
+
+  indicator.menuitem_start  = menuitem_start
+  indicator.menuitem_stop   = menuitem_stop
+  indicator.menuitem_reload = menuitem_reload
+
+  menu.indicator = indicator
+  menu.show_all()
+  return menu
+
+def tor_router_start(menuitem):
+  process = subprocess.Popen(['sudo', '/etc/init.d/tor-router', 'start'], stdout=subprocess.PIPE)
+  stdout = process.communicate()[0]
+
+  print(stdout.decode('utf-8'))
+
+  if process.returncode == 0:
+    notification = Notify.Notification.new(_('Tor-Router started'), stdout.decode('utf-8'))
+  else:
+    notification = Notify.Notification.new(_('Tor-Router failed to start'), stdout.decode('utf-8'))
+
+  image = GdkPixbuf.Pixbuf.new_from_file(menuitem.get_parent().indicator.ICON_ENABLED)
+
+  notification.set_hint('resident', glib.Variant.new_boolean(False))
+  notification.set_hint('transient', glib.Variant.new_boolean(True))
+  notification.set_icon_from_pixbuf(image)
+  notification.set_image_from_pixbuf(image)
+  notification.set_timeout(5000)
+  notification.show()
+
+def tor_router_stop(menuitem):
+  process = subprocess.Popen(['sudo', '/etc/init.d/tor-router', 'stop'], stdout=subprocess.PIPE)
+  stdout = process.communicate()[0]
+
+  print(stdout.decode('utf-8'))
+
+  if process.returncode == 0:
+    notification = Notify.Notification.new(_('Tor-Router stopped'), stdout.decode('utf-8'))
+  else:
+    notification = Notify.Notification.new(_('Tor-Router failed to stop'), stdout.decode('utf-8'))
+
+  image = GdkPixbuf.Pixbuf.new_from_file(menuitem.get_parent().indicator.ICON_DISABLED)
+
+  notification.set_hint('resident', glib.Variant.new_boolean(False))
+  notification.set_hint('transient', glib.Variant.new_boolean(True))
+  notification.set_icon_from_pixbuf(image)
+  notification.set_image_from_pixbuf(image)
+  notification.set_timeout(5000)
+  notification.show()
+
+#def tor_router_torchk(menuitem):
+#  pid = os.fork()
+#  if not pid:
+#    webbrowser.get('/usr/bin/x-www-browser --incognito -private-window %s').open('https://check.torproject.org/', new=2)
+#    sys.exit()
+
+def tor_router_torchk(menuitem):
+  open_web_browser=lambda: webbrowser.get('/usr/bin/x-www-browser --incognito -private-window %s').open('https://check.torproject.org/', new=2)
+  web_browser_thread=threading.Thread(target=open_web_browser)
+  web_browser_thread.start()
+
+def tor_router_reload(menuitem):
+  process = subprocess.Popen(['sudo', '/etc/init.d/tor-router', 'reload'], stdout=subprocess.PIPE)
+  stdout = process.communicate()[0]
+
+  print(stdout.decode('utf-8'))
+
+  if process.returncode == 0:
+    notification = Notify.Notification.new(_('Tor-Router reloaded'), stdout.decode('utf-8'))
+  else:
+    notification = Notify.Notification.new(_('Tor-Router failed to reload'), stdout.decode('utf-8'))
+
+  image = GdkPixbuf.Pixbuf.new_from_file(menuitem.get_parent().indicator.ICON_ENABLED)
+
+  notification.set_hint('resident', glib.Variant.new_boolean(False))
+  notification.set_hint('transient', glib.Variant.new_boolean(True))
+  notification.set_icon_from_pixbuf(image)
+  notification.set_image_from_pixbuf(image)
+  notification.set_timeout(5000)
+  notification.show()
+
+def tor_router_status(menuitem):
+  process = subprocess.Popen(['sudo', '/etc/init.d/tor-router', 'status'], stdout=subprocess.PIPE)
+  stdout = process.communicate()[0]
+
+  print(stdout.decode('utf-8'))
+
+  if process.returncode == 0:
+    notification = Notify.Notification.new(_('Tor-Router is running'), stdout.decode('utf-8'))
+  else:
+    notification = Notify.Notification.new(_('Tor-Router is not running'), stdout.decode('utf-8'))
+
+  image = GdkPixbuf.Pixbuf.new_from_file(menuitem.get_parent().indicator.ICON_ENABLED)
+
+  notification.set_hint('resident', glib.Variant.new_boolean(False))
+  notification.set_hint('transient', glib.Variant.new_boolean(True))
+  notification.set_icon_from_pixbuf(image)
+  notification.set_image_from_pixbuf(image)
+  notification.set_timeout(5000)
+  notification.show()
+
+def tor_router_settings(menuitem):
+  with open(os.devnull, 'w') as devnull:
+    subprocess.Popen(['sudo', 'xdg-open', '/etc/default/tor-router'], stdout=devnull, stderr=devnull)
+
+def dialog_donate(menuitem):
+
+  menuitem.set_sensitive(False)
+
+  win = gtk.Window(gtk.WindowType.TOPLEVEL)
+  win.btc_address = 'bc1q9ha0l0tt7dghcpgext8jppejandefeshcukpxx'
+  win.set_attached_to(menuitem)
+  win.set_auto_startup_notification(False)
+  win.set_keep_above(True)
+  win.set_size_request(640, 220)
+  win.set_modal(True)
+  win.set_resizable(False)
+  win.set_skip_pager_hint(True)
+  win.set_skip_taskbar_hint(True)
+  win.set_title(u'\u2764\uFE0F ' + _('Please Donate') + u' \u2764\uFE0F')
+  win.set_type_hint(gdk.WindowTypeHint.DIALOG) # UTILITY
+  win.connect("destroy", lambda w: (menuitem.set_sensitive(True), w.destroy()))
+
+  win.image = gtk.Image()
+  win.image.set_from_file(menuitem.get_parent().indicator.ICON_DONATE)
+
+  win.label = gtk.Label()
+  win.label.set_text(_('This project is open source, and the only income comes from the donators. If you like the project, please donate, thank you!'))
+  win.label.set_size_request(410, 50)
+  win.label.set_max_width_chars(50)
+  win.label.set_lines(-1)
+  win.label.set_line_wrap(True)
+  win.label.set_xalign(0.0)
+  win.label.set_yalign(0.0)
+  win.label.set_justify(gtk.Justification.LEFT)
+
+  win.link = gtk.LinkButton()
+  win.link.set_uri('bitcoin:' + win.btc_address)
+  win.link.set_label(win.link.get_uri())
+  win.link.set_halign(gtk.Align.START)
+  win.link.set_valign(gtk.Align.CENTER)
+  win.link.set_visited(False)
+  win.link.set_size_request(410, 60)
+  win.link.connect('clicked', lambda l: win.link.set_visited(False))
+
+  win.button = gtk.Button()
+  win.button.set_label(_('Copy address'))
+  win.button.set_halign(gtk.Align.CENTER)
+  win.button.set_valign(gtk.Align.END)
+  win.button.set_size_request(410, -1)
+  win.button.connect('clicked', lambda b: copy_btc_address_to_clipboard(win))
+
+  win.vbox = gtk.VBox()
+  win.vbox.pack_start(win.label, False, False, 10)
+  win.vbox.pack_start(win.link, False, False, 10)
+  win.vbox.pack_end(win.button, False, False, 10)
+
+  win.hbox = gtk.HBox()
+  win.hbox.pack_start(win.image, False, False, 10)
+  win.hbox.pack_start(win.vbox, False, False, 0)
+
+  win.add(win.hbox)
+
+  win.show_all()
+
+def copy_btc_address_to_clipboard(win):
+
+  gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD).set_text(win.btc_address, -1)
+
+  dialog = gtk.MessageDialog(win, 0, gtk.MessageType.INFO | gtk.DialogFlags.MODAL, gtk.ButtonsType.OK, _('Bitcoin address copied'))
+  dialog.format_secondary_text(_('The bitcoin address has been copied to the clipboard!'))
+
+  response = dialog.run()
+
+# if response == gtk.ResponseType.OK:
+#   print("Dialog closed by clicking OK button")
+
+  dialog.destroy()
+
+def dialog_about(menuitem):
+
+  menuitem.set_sensitive(False)
+
+  about_dialog = gtk.AboutDialog()
+
+  about_dialog.set_attached_to(menuitem)
+  about_dialog.set_transient_for(None)
+  about_dialog.set_auto_startup_notification(False)
+  about_dialog.set_keep_above(True)
+  about_dialog.set_modal(True)
+  about_dialog.set_skip_pager_hint(True)
+  about_dialog.set_skip_taskbar_hint(True)
+  about_dialog.connect("destroy", lambda w: (menuitem.set_sensitive(True), w.destroy()))
+
+  about_dialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(menuitem.get_parent().indicator.APP_ICON).scale_simple(192, 192, GdkPixbuf.InterpType.BILINEAR))
+
+  about_dialog.set_program_name(_('Tor-Router Gnome'))
+  about_dialog.set_version("1.0")
+  about_dialog.set_authors(["m4dm4x1337"])
+  about_dialog.set_website("https://github.com/m4dm4x1337/tor-router-gnome")
+  about_dialog.set_comments(_('This indicator allows you to quickly enable and disable system-wide TOR routing.'))
+
+# about_dialog.run()
+# about_dialog.destroy()
+
+  about_dialog.show_all()
+
+def quit(menuitem):
+  Notify.uninit()
+  gtk.main_quit()
+
+if __name__ == "__main__":
+  main()
+

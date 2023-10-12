@@ -1,0 +1,136 @@
+# German translation of tor-router-gnome
+# Copyright (C) 2023 m4dm4x1337 <madmax@earth.local>
+# This file is distributed under the same license as the tor-router-gnome package.
+# m4dm4x1337 <madmax@earth.local>, 2023.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: tor-router-gnome 1.0\n"
+"Report-Msgid-Bugs-To: m4dm4x1337 <madmax@earth.local>\n"
+"POT-Creation-Date: 2023-09-19 16:12+0200\n"
+"PO-Revision-Date: 2023-09-19 16:12+0200\n"
+"Last-Translator: m4dm4x1337 <madmax@earth.local>\n"
+"Language-Team: m4dm4x1337 <madmax@earth.local>\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:89
+msgid "OFFLINE"
+msgstr "OFFLINE"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:90
+msgid "CLEARNET"
+msgstr "CLEARNET"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:91
+msgid "STOPPED"
+msgstr "ANGEHALTEN"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:92
+msgid "DARKNET"
+msgstr "DARKNET"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:94
+msgid "Darknet"
+msgstr "Darknet"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:95
+msgid "Clearnet"
+msgstr "Clearnet"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:96
+msgid "Show IP Address"
+msgstr "IP-Adresse anzeigen"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:97
+msgid "Switch IP Address"
+msgstr "IP-Adresse wechseln"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:98
+msgid "Status"
+msgstr "Status"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:99
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:100
+#: tor-router-gnome/usr/bin/tor-router-gnome:268
+msgid "Please Donate"
+msgstr "Bitte spenden Sie"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:101
+msgid "About"
+msgstr "Über"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:102
+msgid "Exit"
+msgstr "Beenden"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:166
+msgid "Tor-Router started"
+msgstr "Tor-Router gestartet"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:168
+msgid "Tor-Router failed to start"
+msgstr "Tor-Router konnte nicht gestartet werden"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:186
+msgid "Tor-Router stopped"
+msgstr "Tor-Router angehalten"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:188
+msgid "Tor-Router failed to stop"
+msgstr "Tor-Router konnte nicht angehalten werden"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:217
+msgid "Tor-Router reloaded"
+msgstr "Tor-Router neu geladen"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:219
+msgid "Tor-Router failed to reload"
+msgstr "Tor-Router konnte nicht neu geladen werden"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:237
+msgid "Tor-Router is running"
+msgstr "Tor-Router läuft"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:239
+msgid "Tor-Router is not running"
+msgstr "Tor-Router läuft nicht"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:276
+msgid ""
+"This project is open source, and the only income comes from the donators. If "
+"you like the project, please donate, thank you!"
+msgstr ""
+"Dieses Projekt ist Open Source, und das einzige Einkommen stammt von den "
+"Spendern. Wenn Ihnen das Projekt gefällt, spenden Sie bitte, vielen Dank!"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:295
+msgid "Copy address"
+msgstr "Adresse kopieren"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:318
+msgid "Bitcoin address copied"
+msgstr "Bitcoin Adresse kopiert"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:319
+msgid "The bitcoin address has been copied to the clipboard!"
+msgstr "Die Bitcoin Adresse wurde in die Zwischenablage kopiert!"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:345
+msgid "Tor-Router Gnome"
+msgstr "Tor-Router Gnome"
+
+#: tor-router-gnome/usr/bin/tor-router-gnome:349
+msgid ""
+"This indicator allows you to quickly enable and disable system-wide TOR "
+"routing."
+msgstr ""
+"Mit diesem Indikator können Sie das systemweite TOR-Routing schnell "
+"aktivieren und deaktivieren."

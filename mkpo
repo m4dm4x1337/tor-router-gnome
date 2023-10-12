@@ -1,0 +1,23 @@
+#!/bin/sh
+
+APPNAME=tor-router-gnome
+
+PYFILE=$APPNAME/usr/bin/$APPNAME
+POFILE=$APPNAME/usr/share/locale/de/LC_MESSAGES/$APPNAME.po
+
+sed -i '/^\#\:/d' "$POFILE" && \
+xgettext \
+  --join-existing \
+  --omit-header \
+  --sort-by-file \
+  --keyword=_ \
+  --language=Python \
+  --package-name="$APPNAME" \
+  --package-version=1.0 \
+  --msgid-bugs-address='m4dm4x1337 <madmax@earth.local>' \
+  --output="$POFILE" \
+  "$PYFILE" && \
+ls -al "$APPNAME/usr/share/locale/"*"/LC_MESSAGES/$APPNAME".[mp]o
+
+
+exit $?

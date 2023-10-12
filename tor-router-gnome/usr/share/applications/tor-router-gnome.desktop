@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=Tor-Router
+Comment=Quickly enable and disable TOR routing system wide
+Exec=tor-router-gnome
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/tor-router-gnome.xpm
+Categories=GNOME;GTK;Network;
+StartupNotify=false

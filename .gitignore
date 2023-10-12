@@ -1,0 +1,4 @@
+tor-router-gnome_1.0*
+tor-router-gnome/debian/files
+tor-router-gnome/debian/tor-router*
+tor-router-gnome/debian/.debhelper/

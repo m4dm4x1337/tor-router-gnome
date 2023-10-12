@@ -1,0 +1,12 @@
+Cmnd_Alias TOR_ROUTER_GNOME = \
+    /etc/init.d/tor-router start, \
+    /etc/init.d/tor-router stop, \
+    /etc/init.d/tor-router reload, \
+    /etc/init.d/tor-router restart, \
+    /etc/init.d/tor-router status, \
+    /usr/bin/xdg-open /etc/default/tor-router, \
+    /usr/share/tor-router/sbin/tor-router-status
+
+Defaults!TOR_ROUTER_GNOME !syslog, !pam_session
+
+%sudo ALL=(ALL) NOPASSWD: TOR_ROUTER_GNOME

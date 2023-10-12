@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+rm -fr \
+  tor-router-gnome_1.0* \
+  tor-router-gnome/debian/files \
+  tor-router-gnome/debian/.debhelper/ \
+  tor-router-gnome/debian/tor-router-gnome*
+
+exit $?

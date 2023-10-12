@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Tor-Router
+Exec=tor-router-gnome
+OnlyShowIn=GNOME;
+StartupNotify=false
+Terminal=false
+AutostartCondition=GNOME3 unless-session gnome

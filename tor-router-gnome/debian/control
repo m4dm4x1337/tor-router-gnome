@@ -1,0 +1,16 @@
+Source: tor-router-gnome
+Section: net
+Priority: optional
+Maintainer: m4dm4x1337 <madmax@earth.local>
+Bugs: https://github.com/m4dm4x1337/tor-router-gnome/issues
+Standards-Version: 4.6.2
+
+Package: tor-router-gnome
+Architecture: all
+Depends: gir1.2-appindicator3-0.1, gir1.2-gdkpixbuf-2.0, gir1.2-gtk-3.0, gnome-shell, libnotify-bin, procps, python3, python3-gi, sudo, tor-router
+Enhances: tor-router
+Suggests: tor-router-web
+Homepage: https://github.com/m4dm4x1337/tor-router-gnome
+Description: Quickly enable and disable TOR routing system wide
+ This indicator allows you to quickly enable and disable system-wide
+ TOR routing.
