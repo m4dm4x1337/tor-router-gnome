@@ -4,6 +4,8 @@
 
 **Tor-Router Gnome** is an app indicator for the GNOME desktop that allows you to quickly enable and disable system-wide TOR routing.
 
+![Screen record](https://raw.githubusercontent.com/m4dm4x1337/tor-router-gnome/master/resources/images/screen-rec.gif)
+
 ## Installation
 
 Download the Debian package and run this commands:
