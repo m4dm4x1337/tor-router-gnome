@@ -2,7 +2,7 @@
 
 ## Description
 
-**Tor-Router Gnome** is an app indicator for the GNOME desktop that allows you to quickly enable and disable system-wide TOR routing.
+**Tor-Router Gnome** is an app indicator for the GNOME desktop that allows you to quickly enable and disable [system-wide TOR routing](https://github.com/m4dm4x1337/tor-router).
 
 ![Screen record](https://raw.githubusercontent.com/m4dm4x1337/tor-router-gnome/master/resources/images/screen-rec.gif)
 
@@ -35,7 +35,7 @@ There are **two** graphical user interfaces!
 
 The first is this app indicator for the GNOME desktop that allows you to easily start/stop Tor-Router.
 
-The second is a web GUI that can display a lot of additional information and enable remote management and monitoring of Tor-Router.
+The second is a [web GUI](https://github.com/m4dm4x1337/tor-router-web-gui) that can display a lot of additional information and enable remote management and monitoring of Tor-Router.
 
 ## Internationalization (i18n)
 
